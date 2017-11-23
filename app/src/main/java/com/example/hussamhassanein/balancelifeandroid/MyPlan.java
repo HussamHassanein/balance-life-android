@@ -17,5 +17,8 @@ public class MyPlan extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.myplan);
+        getSupportActionBar().setTitle("My Plan");
+
     }
 }
+

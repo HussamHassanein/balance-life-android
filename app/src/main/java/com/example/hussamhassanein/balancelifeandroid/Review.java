@@ -13,5 +13,7 @@ public class Review extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.review);
+        getSupportActionBar().setTitle("Review");
+
     }
 }

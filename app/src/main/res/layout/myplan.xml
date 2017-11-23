@@ -3,6 +3,62 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent" android:layout_height="match_parent"
-    tools:context=".MyPlan">
+    tools:context=".MyPlan"
+    android:background="#0E7C7B"
+    >
+    <Button
+        android:id="@+id/sleep"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_marginTop="49dp"
+        android:text="sleep"
+        android:padding="25dip"
+        android:background="@android:color/white"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:gravity="left|center_vertical"
+        />
+
+    <Button
+        android:id="@+id/social"
+        android:text="social"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_marginTop="25dp"
+        android:layout_below="@+id/sleep"
+        android:layout_alignStart="@+id/sleep"
+        android:padding="25dip"
+        android:background="@android:color/white"
+        android:gravity="left|center_vertical"
+
+        />
+
+    <Button
+        android:id="@+id/exercise"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:text="Exercise"
+        android:layout_marginTop="25dp"
+        android:layout_below="@+id/social"
+        android:layout_centerHorizontal="true"
+        android:padding="25dip"
+        android:background="@android:color/white"
+        android:gravity="left|center_vertical"
+
+        />
+    <Button
+        android:id="@+id/workandstudies"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:text="work and studies"
+        android:layout_marginTop="25dp"
+        android:padding="25dip"
+        android:background="@android:color/white"
+        android:layout_below="@+id/exercise"
+        android:layout_alignParentStart="true"
+        android:gravity="left|center_vertical"
+        />
+
+
 
 </RelativeLayout>
