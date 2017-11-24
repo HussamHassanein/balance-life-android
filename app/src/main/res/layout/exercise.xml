@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
+
     tools:context="com.example.hussamhassanein.balancelifeandroid.planCategories.Exercise"
     android:background="#0E7C7B">
 

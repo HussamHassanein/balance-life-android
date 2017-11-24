@@ -6,13 +6,17 @@
     tools:context=".Review"
     android:background="#0E7C7B">
 
-    <TextView
-        android:id="@+id/textView"
+
+
+
+    <EditText
+        android:id="@+id/viewhour"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="92dp"
-        android:layout_marginTop="81dp"
+        android:layout_marginEnd="39dp"
+        android:layout_marginTop="48dp"
+
         />
 </RelativeLayout>
