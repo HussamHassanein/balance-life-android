@@ -1,6 +1,7 @@
 package com.example.hussamhassanein.balancelifeandroid;
 
 import android.annotation.SuppressLint;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -10,6 +11,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
 /**
  * Created by HussamHassanein on 2017-11-23.
  */
@@ -17,6 +19,7 @@ import android.widget.Toast;
 public class Review extends AppCompatActivity {
      public static final String DEFAULT ="N/A";
      EditText hhh;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,4 +41,9 @@ public class Review extends AppCompatActivity {
     }
 
 
+   /* rrr=(TextView)findViewById(R.id.textView);
+    SharedPreferences share=getSharedPreferences("MY_DATA", Context.MODE_PRIVATE);
+    String result=share.getString("Social","");
+        rrr.setText(result);
+        */
 }

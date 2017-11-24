@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent" android:layout_height="match_parent"
-    tools:context=".Review">
+    tools:context=".Review"
+    android:background="#0E7C7B">
 
 
 
@@ -16,5 +17,6 @@
         android:layout_alignParentTop="true"
         android:layout_marginEnd="39dp"
         android:layout_marginTop="48dp"
+
         />
 </RelativeLayout>
