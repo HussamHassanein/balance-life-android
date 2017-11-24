@@ -37,5 +37,16 @@
 
         />
 
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/hours"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="17dp"
+        android:text="Submit"
+        android:onClick="goToMyPlan"/>
+
+
 </RelativeLayout>
 

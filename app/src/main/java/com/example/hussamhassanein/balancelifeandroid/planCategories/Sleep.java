@@ -1,6 +1,8 @@
 package com.example.hussamhassanein.balancelifeandroid.planCategories;
 
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
@@ -11,6 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.example.hussamhassanein.balancelifeandroid.MyPlan;
 import com.example.hussamhassanein.balancelifeandroid.R;
 
 import java.lang.reflect.Field;
@@ -22,11 +25,14 @@ import java.util.List;
  */
 
 public class Sleep extends AppCompatActivity {
-
+    Spinner sleepHours;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.sleep);
+        sleepHours = (Spinner) findViewById(R.id.hours);
+        Context context;
+
         time();
     }
 
@@ -64,6 +70,16 @@ public void time(){
 
     }
 
+
+    public void goToMyPlan(View view) {
+        SharedPreferences shared=getSharedPreferences("Mydata",Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor= shared.edit();
+        String h=sleepHours.getSelectedItem().toString();
+        editor.putString("hours",h );
+        editor.commit();
+        Intent intent = new Intent(this, MyPlan.class);
+        startActivity(intent);
+    }
 
 
 }
