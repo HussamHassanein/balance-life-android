@@ -1,11 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:layout_width="match_parent" android:layout_height="wrap_content"
     tools:context=".Review"
-    android:background="#0E7C7B">
-
+    android:orientation="vertical"
+    android:background="#0E7C7B"
+    android:scrollbars="vertical"
+    >
 
     <TextView
         android:id="@+id/textView"
@@ -15,7 +21,7 @@
         android:layout_alignParentTop="true"
         android:layout_marginStart="28dp"
         android:layout_marginTop="31dp"
-        android:text="Mark the task you have done" />
+    android:text="Mark the task you have done" />
 
     <TextView
         android:id="@+id/textView2"
@@ -25,6 +31,9 @@
         android:layout_below="@+id/textView"
         android:layout_marginTop="23dp"
         android:text="Social" />
+
+
+
 
     <!--<LinearLayout
         android:id="@+id/linearLayout2"
@@ -40,10 +49,31 @@
         android:id="@+id/checkview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true" />
+         />
 
+    <TextView
+        android:id="@+id/exercise"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Exercise"
+         />
 
+    <ListView
+        android:id="@+id/exerciseList"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+    />
+    <TextView
+        android:id="@+id/studiesandwork"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Studies And Work"
+      />
+    <ListView
+        android:id="@+id/studiesandworkList"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+         />
 
     <Button
             android:id="@+id/submitbut"
@@ -58,4 +88,5 @@
 
 
 
-</RelativeLayout>
+</LinearLayout>
+</ScrollView>

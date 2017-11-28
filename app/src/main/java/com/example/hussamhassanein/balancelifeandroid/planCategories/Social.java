@@ -33,11 +33,6 @@ import java.util.List;
  */
 
 public class Social extends AppCompatActivity {
-    /** Items entered by the user is stored in this ArrayList variable */
-    ArrayList<String> list = new ArrayList<String>();
-
-    /** Declaring an ArrayAdapter to set items to ListView */
-    ArrayAdapter<String> adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,13 +41,10 @@ public class Social extends AppCompatActivity {
 
         TextView  showText =(TextView) findViewById(R.id.textt);
         SharedPreferences share=getSharedPreferences("MY_DATA", Context.MODE_PRIVATE);
-
         String result1=share.getString("Social",null);
-
         if (result1!=null) {
             showText.append(result1 + "\n");
         }
-
 
     }
 
@@ -61,7 +53,6 @@ public class Social extends AppCompatActivity {
         TextView  showText =(TextView) findViewById(R.id.textt);
         EditText editText = (EditText) findViewById(R.id.taskSocial);
 
-        list.add(editText.getText().toString());
         if(editText.getText().toString().equals("")) {
             AlertDialog alertDialog = new AlertDialog.Builder(Social.this).create();
             alertDialog.setTitle("Alert");

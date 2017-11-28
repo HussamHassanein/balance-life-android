@@ -3,6 +3,64 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.example.hussamhassanein.balancelifeandroid.planCategories.StudiesAndWork">
+    tools:context="com.example.hussamhassanein.balancelifeandroid.planCategories.StudiesAndWork"
+    android:background="#0E7C7B">
+
+    <EditText
+        android:id="@+id/taskSocial"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:ems="10"
+        android:hint="Write down your task"
+        android:inputType="textMultiLine"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+    <Button
+        android:id="@+id/addTask"
+        android:layout_width="130dp"
+        android:layout_height="50dp"
+        android:text="Add task"
+        android:textSize="18dip"
+        android:textColor="@android:color/white"
+        android:background="#171A21"
+        android:onClick="printText"
+        android:layout_marginTop="12dp"
+        android:layout_below="@+id/taskSocial"
+        android:layout_alignEnd="@+id/Confirm" />
+
+    <Button
+        android:id="@+id/Confirm"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:text="Confirm"
+        android:textSize="18dip"
+        android:textColor="@android:color/white"
+        android:background="#171A21"
+        android:onClick="confirmSocial"
+        android:layout_marginBottom="16dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="12dp" />
+
+    <RelativeLayout android:id="@+id/doa" android:layout_width="240dip"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_toStartOf="@+id/addTask">
+
+        <TextView
+            android:id="@+id/textt"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="100dip"
+            android:textSize="20sp"
+            android:singleLine = "false"
+            android:editable="true"
+            android:focusableInTouchMode="true"
+            />
+
+
+    </RelativeLayout>
+
 
 </RelativeLayout>

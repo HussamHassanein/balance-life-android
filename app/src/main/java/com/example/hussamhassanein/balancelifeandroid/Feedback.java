@@ -23,6 +23,6 @@ public class Feedback extends AppCompatActivity {
         t= (TextView) findViewById(R.id.textView3);
         SharedPreferences shared=getSharedPreferences("Mydata", Context.MODE_PRIVATE);
              String get= shared.getString("SocialChecked",null);
-     t.setText(get);
+        t.setText(get);
     }
 }
