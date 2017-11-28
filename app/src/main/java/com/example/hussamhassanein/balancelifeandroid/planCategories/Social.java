@@ -45,6 +45,7 @@ public class Social extends AppCompatActivity {
         SharedPreferences share=getSharedPreferences("MY_DATA", Context.MODE_PRIVATE);
 
         String result1=share.getString("Social",null);
+
         if (result1!=null) {
             showText.append(result1 + "\n");
         }
