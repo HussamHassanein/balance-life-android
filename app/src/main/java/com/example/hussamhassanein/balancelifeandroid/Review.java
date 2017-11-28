@@ -3,9 +3,11 @@ package com.example.hussamhassanein.balancelifeandroid;
 import android.annotation.SuppressLint;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +22,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.regex.PatternSyntaxException;
 
 
@@ -59,6 +63,17 @@ public class Review extends AppCompatActivity {
         } catch (PatternSyntaxException ex) {
             //
         }
+
+        List list =  new ArrayList<String>();
+        Collections.addAll(list, splitArray);
+        for(int i = 0 ;i < splitArray.length;i++){
+            if(list.get(i).equals("")){
+                list.remove( new Integer(i));
+            }
+
+        }
+        splitArray = (String[]) list.toArray(new String[list.size()]);
+
 
         if(category.equals("Social")) {
             l = (ListView) findViewById(R.id.checkview);
