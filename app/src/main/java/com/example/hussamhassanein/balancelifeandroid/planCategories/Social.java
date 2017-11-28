@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -48,6 +49,8 @@ public class Social extends AppCompatActivity {
         if (result1!=null) {
             showText.append(result1 + "\n");
         }
+
+
     }
 
     public void printText(View view){

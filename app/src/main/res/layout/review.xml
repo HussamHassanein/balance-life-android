@@ -41,8 +41,9 @@
             android:layout_width="200dip"
             android:layout_height="400dip"
 
+            android:layout_above="@+id/submitbut"
             android:layout_alignEnd="@+id/textView"
-            android:layout_alignParentBottom="true" />
+            android:layout_marginBottom="16dp" />
 
         <Button
             android:id="@+id/submitbut"
