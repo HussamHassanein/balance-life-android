@@ -48,21 +48,37 @@
                 android:value=".MainActivity" />
         </activity>
         <activity
-            android:name=".planCategories.Excercise"
+            android:name=".planCategories.Exercise"
             android:label="exercise"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MyPlan" />
+        </activity>
         <activity
             android:name=".planCategories.Sleep"
             android:label="sleep"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MyPlan" />
+        </activity>
         <activity
             android:name=".planCategories.Social"
             android:label="social"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait">
+        <meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value=".MyPlan" />
+            </activity>
         <activity
-            android:name=".planCategories.StudiesAndStudies"
+            android:name=".planCategories.StudiesAndWork"
             android:label="studies and work"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MyPlan" />
+        </activity>
 
     </application>
 

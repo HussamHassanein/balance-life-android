@@ -1,9 +1,12 @@
 package com.example.hussamhassanein.balancelifeandroid.planCategories;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -49,6 +52,8 @@ public class Social extends AppCompatActivity {
         if (result1!=null) {
             showText.append(result1 + "\n");
         }
+
+
     }
 
     public void printText(View view){
@@ -57,9 +62,23 @@ public class Social extends AppCompatActivity {
         EditText editText = (EditText) findViewById(R.id.taskSocial);
 
         list.add(editText.getText().toString());
+        if(editText.getText().toString().equals("")) {
+            AlertDialog alertDialog = new AlertDialog.Builder(Social.this).create();
+            alertDialog.setTitle("Alert");
+            alertDialog.setMessage("Please write a task");
+            alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+            alertDialog.show();
+        }
+        else{
+            showText.append(editText.getText().toString() + "\n");
 
-        showText.append(editText.getText().toString() + "\n");
 
+        }
         editText.setText("");
 
     }

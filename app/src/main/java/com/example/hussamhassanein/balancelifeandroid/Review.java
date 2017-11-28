@@ -66,7 +66,8 @@ public class Review extends AppCompatActivity {
               }
           });
 
-    }
+        social();
+
 
 
 
