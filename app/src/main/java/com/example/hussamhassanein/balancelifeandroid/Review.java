@@ -61,12 +61,21 @@ public class Review extends AppCompatActivity {
       //  hhh.setText(hou);
    //rev();
 
+        social();
+
+    }
+
+    public void social(){
+        TextView  showText =(TextView) findViewById(R.id.textView4);
+        SharedPreferences share=getSharedPreferences("MY_DATA", Context.MODE_PRIVATE);
+
+        String result1=share.getString("Social",null);
+        if (result1!=null) {
+            showText.append(result1 + "\n");
+        }
     }
 
     private void showrev() {
-
-
-
 
 
         }
