@@ -36,16 +36,16 @@
     </LinearLayout> xmlns:android="http://schemas.android.com/apk/res/android">
 -->
 
-        <ListView
-            android:id="@+id/checkview"
-            android:layout_width="200dip"
-            android:layout_height="400dip"
+    <ListView
+        android:id="@+id/checkview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true" />
 
-            android:layout_marginBottom="13dp"
-            android:layout_above="@+id/submitbut"
-            android:layout_toEndOf="@+id/textView" />
 
-        <Button
+
+    <Button
             android:id="@+id/submitbut"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -54,13 +54,8 @@
             android:onClick="ShowChecked"
             android:text="Submit" />
 
-    <TextView
-        android:id="@+id/textView4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignTop="@+id/checkview"
-        android:layout_marginStart="20dp"
-         />
+
+
+
 
 </RelativeLayout>

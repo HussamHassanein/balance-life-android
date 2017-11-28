@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.regex.PatternSyntaxException;
 
 
 /**
@@ -24,86 +25,62 @@ import java.util.ArrayList;
  */
 
 public class Review extends AppCompatActivity {
-     public static final String DEFAULT ="N/A";
-     EditText hhh;
-    ArrayList<String> selectecItem= new ArrayList<>();
+
+   
+    ListView l;
+    ArrayList<String> checkedelement= new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.review);
         getSupportActionBar().setTitle("Review");
-    //hhh= (EditText) findViewById(R.id.viewhour);
-        ListView view=(ListView)findViewById(R.id.checkview);
-        view.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
-        String[] items={"work","study","maths"};
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                R.layout.rowlayout,R.id.txt_lan,items);
-          view.setAdapter(adapter);
 
+        SharedPreferences share=getSharedPreferences("MY_DATA", Context.MODE_PRIVATE);
+        String plan=share.getString("Social",null);
+        String[] splitArray = null;
+       try {
+            splitArray = plan.split("[\\r\\n]+");
+        } catch (PatternSyntaxException ex) {
+            // 
+        }
 
+        l=(ListView)findViewById(R.id.checkview);
+        l.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
 
+      //ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,R.layout.rowlayout,R.id.txt_lan,splitArray);
+       ArrayAdapter<String> adapter=new ArrayAdapter<String>(this,android.R.layout.select_dialog_multichoice,splitArray);
+        l.setAdapter(adapter);
+         l.setOnItemClickListener(new AdapterView.OnItemClickListener(){
 
-          view.setOnItemClickListener(new AdapterView.OnItemClickListener(){
-
-              @Override
+             @Override
               public void onItemClick(AdapterView<?> parent,View view , int position , long id) {
                 String selectedItems=((TextView)view).getText().toString();
-                 if(selectecItem.contains(selectedItems)){
-                     selectecItem.remove(selectedItems); //uncheck item
+
+                if(checkedelement.contains(selectedItems)){
+                     checkedelement.remove(selectedItems); //uncheck item
                  }
-                 else selectecItem.add(selectedItems);
+                 else checkedelement.add(selectedItems);
 
               }
           });
-  //      SharedPreferences share= getSharedPreferences("Mydata", Context.MODE_PRIVATE);
-    //    String hou=share.getString("hours"," ");
-      //  hhh.setText(hou);
-   //rev();
 
         social();
 
-    }
-
-    public void social(){
-        TextView  showText =(TextView) findViewById(R.id.textView4);
-        SharedPreferences share=getSharedPreferences("MY_DATA", Context.MODE_PRIVATE);
-
-        String result1=share.getString("Social",null);
-        if (result1!=null) {
-            showText.append(result1 + "\n");
-        }
-    }
-
-    private void showrev() {
-
-
-        }
 
 
 
-    public void rev() {
-        SharedPreferences share= getSharedPreferences("Mydata", Context.MODE_PRIVATE);
-       String hou=share.getString("hours", "");
-           hhh.setText(hou);
 
-    }
 
     public void ShowChecked(View view) {
+        SharedPreferences shared=getSharedPreferences("Mydata",Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor= shared.edit();
+        editor.putString("SocialChecked", String.valueOf(checkedelement));
+        editor.commit();
 
-        String items="";
 
-        for(String item:selectecItem){
-            items+="-"+item+"\n";
-        }
-       // Toast.makeText(this,"You have selected \n", Toast.LENGTH_LONG);
-   Toast.makeText(this,"You have selected \n" + items, Toast.LENGTH_LONG).show();
+
     }
 
-
-   /* rrr=(TextView)findViewById(R.id.textView);
-    SharedPreferences share=getSharedPreferences("MY_DATA", Context.MODE_PRIVATE);
-    String result=share.getString("Social","");
-        rrr.setText(result);
-        */
 }
