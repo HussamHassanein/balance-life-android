@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -39,39 +41,23 @@ public class Social extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.social);
 
+        TextView  showText =(TextView) findViewById(R.id.textt);
+        SharedPreferences share=getSharedPreferences("MY_DATA", Context.MODE_PRIVATE);
+
+        String result1=share.getString("Social",null);
+        if (result1!=null) {
+            showText.append(result1 + "\n");
+        }
     }
 
     public void printText(View view){
 
-        //  adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, list);
-        // showtext.setText(list.toString());
-        // list.add(editText.getText().toString());
-        //adapter.notifyDataSetChanged();
-
-        // newText.setText(editText.getText().toString());
-
-        // RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
-        //newText.setLayoutParams(params);
-        //params.setMargins(10, 250, 0, 0);
-
-        //RelativeLayout chat = (RelativeLayout) findViewById(R.id.socialLayout);
-        //chat.addView(listt);
-
+        TextView  showText =(TextView) findViewById(R.id.textt);
         EditText editText = (EditText) findViewById(R.id.taskSocial);
-        TextView  showtext =(TextView) findViewById(R.id.textt);
 
         list.add(editText.getText().toString());
 
-        //showtext.setText("Today's tasks");
-
-
-        StringBuilder builder = new StringBuilder();
-        for (String details : list) {
-            builder.append("\u2022"+details + "\n");
-        }
-
-        showtext.setText(builder.toString());
-
+        showText.append(editText.getText().toString() + "\n");
 
         editText.setText("");
 
@@ -80,11 +66,14 @@ public class Social extends AppCompatActivity {
     public void confirmSocial(View view){
         SharedPreferences prefs = getSharedPreferences("MY_DATA", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor =prefs.edit();
-        editor.putString("Social",list.toString());
+        TextView  showText =(TextView) findViewById(R.id.textt);
+
+        editor.putString("Social",showText.getText().toString());
         editor.commit();
         Intent intent = new Intent(this, MyPlan.class);
         startActivity(intent);
     }
+
 
 
 }
