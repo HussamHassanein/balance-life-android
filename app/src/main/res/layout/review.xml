@@ -44,12 +44,15 @@
 
     </LinearLayout> xmlns:android="http://schemas.android.com/apk/res/android">
 -->
-
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
     <ListView
         android:id="@+id/checkview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
          />
+    </RelativeLayout>
 
     <TextView
         android:id="@+id/exercise"
@@ -57,24 +60,33 @@
         android:layout_height="wrap_content"
         android:text="Exercise"
          />
-
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
     <ListView
         android:id="@+id/exerciseList"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
     />
+    </RelativeLayout>
+
     <TextView
         android:id="@+id/studiesandwork"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Studies And Work"
       />
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
     <ListView
         android:id="@+id/studiesandworkList"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
          />
-<RelativeLayout
+    </RelativeLayout>
+
+    <RelativeLayout
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
     <Button
