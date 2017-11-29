@@ -4,8 +4,16 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,54 +29,50 @@ import java.util.regex.PatternSyntaxException;
  */
 
 public class Feedback extends AppCompatActivity {
-   TextView t;
+
+   ListView l;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.feedback);
         getSupportActionBar().setTitle("Feedback");
 
+        l= (ListView) findViewById(R.id.feedbackshow);
 
+        //checked
 
-        t= (TextView) findViewById(R.id.textView3);
+        String [] catogery={"Social","Exercise","StudiesAndWork"};
+        int[]  percent ={100, 30, 60};
+       myAdaptar adapter=new myAdaptar(this,catogery,percent);
+        l.setAdapter(adapter);
+    }
 
-        SharedPreferences share = getSharedPreferences("MY_DATA", Context.MODE_PRIVATE);
-        String plan = share.getString("Social", null);
-        String[] splitArray = null;
-        try {
-            splitArray = plan.split("[\\r\\n]+");
-        } catch (PatternSyntaxException ex) {
-            //
-        }
+}
 
+class myAdaptar  extends ArrayAdapter<String>
+{   Context context;
+     int[]   percent;
+     String[] catogery;
+     myAdaptar(Context c, String[] cate , int[] per)
+     {
+         super(c ,R.layout.barlayout,R.id.bartext,cate);
+         this.context=c;
+         this.percent=per;
+         this.catogery=cate;
+     }
 
-   List list =  new ArrayList<String>();
-        Collections.addAll(list, splitArray);
+    @NonNull
+    @Override
+    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
 
+        LayoutInflater inflator= (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View row=inflator.inflate(R.layout.barlayout,parent,false);
 
-        for(int i = 0 ;i < splitArray.length;i++){
-            if(list.get(i).equals("")){
-                AlertDialog alertDialog = new AlertDialog.Builder(Feedback.this).create();
-                alertDialog.setTitle("Alert");
-                alertDialog.setMessage("Please ");
-                alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        });
-                alertDialog.show();
-               // list.remove(i);
-                list.remove( new Integer(i));
-            }
+        ProgressBar progressBar= (ProgressBar) row.findViewById(R.id.progressBar);
+        TextView textbar= (TextView) row.findViewById(R.id.bartext);
 
-        }
-        splitArray = (String[]) list.toArray(new String[list.size()]);
-        String item = "[";
-         for (int i =0; i< list.size();i++){
-            item += "," + list.get(i);
-         }
-        item += "]";
-         t.setText(item);
+        progressBar.setProgress(percent[position]);
+        textbar.setText(catogery[position]);
+        return row;
     }
 }

@@ -72,6 +72,12 @@ public class Review extends AppCompatActivity {
             }
 
         }
+        SharedPreferences.Editor editor= share.edit();
+        int length=splitArray.length;
+        String  str=category+"len";
+        editor.putInt(str, length);
+        editor.commit();
+
         splitArray = (String[]) list.toArray(new String[list.size()]);
 
 
@@ -167,7 +173,7 @@ public class Review extends AppCompatActivity {
 
 
     public void ShowChecked(View view) {
-        SharedPreferences shared=getSharedPreferences("Mydata",Context.MODE_PRIVATE);
+        SharedPreferences shared=getSharedPreferences("MY_DATA",Context.MODE_PRIVATE);
         SharedPreferences.Editor editor= shared.edit();
         editor.putString("SocialChecked", String.valueOf(checkedelement));
         editor.putString("ExerciseChecked", String.valueOf(checkedExercise));
