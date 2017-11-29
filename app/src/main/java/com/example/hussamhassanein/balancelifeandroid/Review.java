@@ -184,7 +184,7 @@ public class Review extends AppCompatActivity {
         editor.putString("StudiesChecked", String.valueOf(checkedStudies));
 
         editor.commit();
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, Feedback.class);
         startActivity(intent);
 
 
