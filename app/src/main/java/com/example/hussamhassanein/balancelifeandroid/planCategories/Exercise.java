@@ -14,6 +14,11 @@ import android.widget.TextView;
 import com.example.hussamhassanein.balancelifeandroid.MyPlan;
 import com.example.hussamhassanein.balancelifeandroid.R;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.regex.PatternSyntaxException;
+
 /**
  * Created by HussamHassanein on 2017-11-23.
  */
@@ -64,7 +69,24 @@ public class Exercise extends AppCompatActivity {
         SharedPreferences prefs = getSharedPreferences("MY_DATA", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor =prefs.edit();
         TextView  showText =(TextView) findViewById(R.id.textt);
+        String[] splitArray = null;
+        try {
+            splitArray = showText.getText().toString().split("[\\r\\n]+");
+        } catch (PatternSyntaxException ex) {
+            //
+        }
 
+        List list =  new ArrayList<String>();
+        Collections.addAll(list, splitArray);
+        for(int i = 0 ;i < splitArray.length;i++){
+            if(list.get(i).equals("")){
+                list.remove( new Integer(i));
+            }
+
+        }
+        splitArray = (String[]) list.toArray(new String[list.size()]);
+
+        editor.putInt("ExLength",splitArray.length);
         editor.putString("Exercise",showText.getText().toString());
         editor.commit();
         Intent intent = new Intent(this, MyPlan.class);

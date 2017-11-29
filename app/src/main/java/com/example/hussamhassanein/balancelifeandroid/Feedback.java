@@ -30,7 +30,11 @@ import java.util.regex.PatternSyntaxException;
 
 public class Feedback extends AppCompatActivity {
 
-   ListView l;
+    double total1;
+    double total2;
+    double total3;
+
+    ListView l;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,8 +45,22 @@ public class Feedback extends AppCompatActivity {
 
         //checked
 
+        SharedPreferences sharef = getSharedPreferences("MY_DATA", Context.MODE_PRIVATE);
+        double de=(double) sharef.getInt("SocialLength",0);
+        double dee=(double)sharef.getInt("SoChLength",0);
+        double dw=(double) sharef.getInt("ExLength",0);
+        double dwe=(double)sharef.getInt("ExChLength",0);
+        double dr=(double) sharef.getInt("StLength",0);
+        double dre=(double)sharef.getInt("StChLength",0);
+
+
+        total1 = Math.round((dee/ de * 100) * 10) / 10;
+        total2 = Math.round((dwe/ dw * 100) * 10) / 10;
+        total3 = Math.round((dre/ dr * 100) * 10) / 10;
+
+
         String [] catogery={"Social","Exercise","StudiesAndWork"};
-        int[]  percent ={100, 30, 60};
+        int[]  percent ={(int)total1, (int)total2, (int)total3};
        myAdaptar adapter=new myAdaptar(this,catogery,percent);
         l.setAdapter(adapter);
     }

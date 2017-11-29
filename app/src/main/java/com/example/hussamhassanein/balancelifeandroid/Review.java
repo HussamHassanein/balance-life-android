@@ -175,6 +175,10 @@ public class Review extends AppCompatActivity {
     public void ShowChecked(View view) {
         SharedPreferences shared=getSharedPreferences("MY_DATA",Context.MODE_PRIVATE);
         SharedPreferences.Editor editor= shared.edit();
+        editor.putInt("SoChLength",checkedelement.size());
+        editor.putInt("ExChLength",checkedExercise.size());
+        editor.putInt("StChLength",checkedStudies.size());
+
         editor.putString("SocialChecked", String.valueOf(checkedelement));
         editor.putString("ExerciseChecked", String.valueOf(checkedExercise));
         editor.putString("StudiesChecked", String.valueOf(checkedStudies));
