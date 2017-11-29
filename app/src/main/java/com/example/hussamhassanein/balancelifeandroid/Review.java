@@ -24,6 +24,7 @@ import android.widget.Toast;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.regex.PatternSyntaxException;
@@ -40,6 +41,9 @@ public class Review extends AppCompatActivity {
     ArrayList<String> checkedelement= new ArrayList<>();
     ArrayList<String> checkedExercise= new ArrayList<>();
     ArrayList<String> checkedStudies= new ArrayList<>();
+
+    ArrayList<String> newd= new ArrayList<>();
+
     Spinner sleepHours;
 
 
@@ -214,16 +218,105 @@ public class Review extends AppCompatActivity {
     public void ShowChecked(View view) {
         SharedPreferences shared=getSharedPreferences("MY_DATA",Context.MODE_PRIVATE);
         SharedPreferences.Editor editor= shared.edit();
+
+        int r=(int)sleepHours.getSelectedItem();
+
         editor.putInt("SoChLength",checkedelement.size());
         editor.putInt("ExChLength",checkedExercise.size());
         editor.putInt("StChLength",checkedStudies.size());
-
         editor.putString("SocialChecked", String.valueOf(checkedelement));
         editor.putString("ExerciseChecked", String.valueOf(checkedExercise));
         editor.putString("StudiesChecked", String.valueOf(checkedStudies));
-
-        int r=(int)sleepHours.getSelectedItem();
         editor.putInt("hoursDone",r );
+
+        String plan = shared.getString("Social", null);
+        String[] splitArray = null;
+        try {
+            splitArray = plan.split("[\\r\\n]+");
+        } catch (PatternSyntaxException ex) {
+            //
+        }
+
+        List list =  new ArrayList<String>();
+        Collections.addAll(list, splitArray);
+
+        List<String> union = new ArrayList<String>(list);
+        union.addAll(checkedelement);
+        List<String> intersection = new ArrayList<String>(list);
+        intersection.retainAll(checkedelement);
+        union.removeAll(intersection);
+        String iHateThis="";
+        for(int i=0; i<union.size();i++){
+            iHateThis=iHateThis+union.get(i)+"\n";
+
+        }
+
+        editor.remove("Social");
+        editor.putString("Social", iHateThis);
+
+
+        String plan2 = shared.getString("Exercise", null);
+        String[] splitArray2 = null;
+        try {
+            splitArray2 = plan2.split("[\\r\\n]+");
+        } catch (PatternSyntaxException ex) {
+            //
+        }
+
+        List list2 =  new ArrayList<String>();
+        Collections.addAll(list2, splitArray2);
+
+        List<String> union2 = new ArrayList<String>(list2);
+        union2.addAll(checkedExercise);
+        List<String> intersection2 = new ArrayList<String>(list2);
+        intersection.retainAll(checkedExercise);
+        union2.removeAll(intersection2);
+        String iStillHateThis="";
+        for(int i=0; i<union2.size();i++){
+            iStillHateThis=iStillHateThis+union2.get(i)+"\n";
+
+        }
+
+        editor.remove("Exercise");
+        editor.putString("Exercise", iStillHateThis);
+
+        String plan3 = shared.getString("StudiesAndWork", null);
+        String[] splitArray3 = null;
+        try {
+            splitArray3 = plan3.split("[\\r\\n]+");
+        } catch (PatternSyntaxException ex) {
+            //
+        }
+
+        List list3 =  new ArrayList<String>();
+        Collections.addAll(list3, splitArray3);
+
+        List<String> union3 = new ArrayList<String>(list3);
+        union3.addAll(checkedStudies);
+        List<String> intersection3 = new ArrayList<String>(list3);
+        intersection3.retainAll(checkedStudies);
+        union3.removeAll(intersection3);
+
+        String iHateThisSoMuch="";
+
+            for(int i=0; i<union3.size();i++){
+                iHateThisSoMuch=iHateThisSoMuch+union3.get(i)+"\n";
+
+            }
+
+
+
+        editor.remove("StudiesAndWork");
+        editor.putString("StudiesAndWork", iHateThisSoMuch);
+
+        editor.remove("SocialLength");
+        editor.remove("ExLength");
+        editor.remove("StLength");
+
+        editor.putInt("SocialLength",union.size());
+        editor.putInt("ExLength",union2.size());
+        editor.putInt("StLength",union3.size());
+
 
         editor.commit();
         Intent intent = new Intent(this, Feedback.class);
