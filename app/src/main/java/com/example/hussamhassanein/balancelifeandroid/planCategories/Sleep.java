@@ -72,10 +72,10 @@ public void time(){
 
 
     public void goToMyPlan(View view) {
-        SharedPreferences shared=getSharedPreferences("Mydata",Context.MODE_PRIVATE);
+        SharedPreferences shared=getSharedPreferences("MY_DATA",Context.MODE_PRIVATE);
         SharedPreferences.Editor editor= shared.edit();
-        String h=sleepHours.getSelectedItem().toString();
-        editor.putString("hours",h );
+        int h= (int) sleepHours.getSelectedItem();
+        editor.putInt("hours",h );
         editor.commit();
         Intent intent = new Intent(this, MyPlan.class);
         startActivity(intent);

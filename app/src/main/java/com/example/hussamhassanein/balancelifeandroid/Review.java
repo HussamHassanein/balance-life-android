@@ -18,9 +18,11 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -38,6 +40,7 @@ public class Review extends AppCompatActivity {
     ArrayList<String> checkedelement= new ArrayList<>();
     ArrayList<String> checkedExercise= new ArrayList<>();
     ArrayList<String> checkedStudies= new ArrayList<>();
+    Spinner sleepHours;
 
 
 
@@ -51,6 +54,10 @@ public class Review extends AppCompatActivity {
         Check("Social");
         Check("Exercise");
         Check("StudiesAndWork");
+        sleepHours = (Spinner) findViewById(R.id.hrSpinner);
+        Context context;
+
+        time2Go();
     }
 
     public void Check(String category){
@@ -170,7 +177,39 @@ public class Review extends AppCompatActivity {
         }
     }
 
+    public void time2Go(){
 
+        List hour1 = new ArrayList<Integer>();
+        for( int i = 1; i <= 24 ; i++) {
+            hour1.add(i);
+        }
+
+        Spinner spinner = (Spinner) findViewById(R.id.hrSpinner);
+        try {
+            Field popup = Spinner.class.getDeclaredField("mPopup");
+            popup.setAccessible(true);
+
+            // Get private mPopup member variable and try cast to ListPopupWindow
+            android.widget.ListPopupWindow popupWindow = (android.widget.ListPopupWindow) popup.get(spinner);
+
+            // Set popupWindow height to 500px
+            popupWindow.setHeight(500);
+            popupWindow.setWidth(550);
+        }
+        catch (NoClassDefFoundError | ClassCastException | NoSuchFieldException | IllegalAccessException e) {
+            // silently fail...
+        }
+        //  Spinner spinner = (Spinner) findViewById(R.id.hours);
+// Create an ArrayAdapter using the string array and a default spinner layout
+        ArrayAdapter<Integer> adapter = new ArrayAdapter<Integer>(this,
+                android.R.layout.simple_spinner_item,hour1);
+// Specify the layout to use when the list of choices appears
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+// Apply the adapter to the spinner
+        spinner.setAdapter(adapter);
+
+
+    }
 
     public void ShowChecked(View view) {
         SharedPreferences shared=getSharedPreferences("MY_DATA",Context.MODE_PRIVATE);
@@ -183,11 +222,15 @@ public class Review extends AppCompatActivity {
         editor.putString("ExerciseChecked", String.valueOf(checkedExercise));
         editor.putString("StudiesChecked", String.valueOf(checkedStudies));
 
+        int r=(int)sleepHours.getSelectedItem();
+        editor.putInt("hoursDone",r );
+
         editor.commit();
         Intent intent = new Intent(this, Feedback.class);
         startActivity(intent);
 
 
     }
+
 
 }

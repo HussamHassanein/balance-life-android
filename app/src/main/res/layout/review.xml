@@ -87,6 +87,39 @@
     </RelativeLayout>
 
     <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/insertNum"
+            android:layout_width="match_parent"
+            android:layout_height="50dip"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="11dp"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:text="Number of hours planned"
+            android:textSize="20dip"
+            android:textStyle="bold"
+            android:textIsSelectable="false"
+            />
+
+        <Spinner
+            android:id="@+id/hrSpinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_below="@+id/insertNum"
+            android:layout_marginEnd="12dp"
+            android:spinnerMode="dropdown"
+            android:dropDownWidth="100dp"
+            android:dropDownHeight="100dp"
+            />
+
+    </RelativeLayout>
+
+    <RelativeLayout
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
     <Button
@@ -99,7 +132,6 @@
             android:text="Submit" />
 
 </RelativeLayout>
-
 
 
 

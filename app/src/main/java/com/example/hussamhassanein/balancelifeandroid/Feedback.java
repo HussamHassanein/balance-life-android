@@ -53,6 +53,8 @@ public class Feedback extends AppCompatActivity {
         double dr=(double) sharef.getInt("StLength",0);
         double dre=(double)sharef.getInt("StChLength",0);
 
+        int hoursExpected= sharef.getInt("hours",0);
+        int hoursDone= sharef.getInt("hoursDone",0);
 
         total1 = Math.round((dee/ de * 100) * 10) / 10;
         total2 = Math.round((dwe/ dw * 100) * 10) / 10;
@@ -63,7 +65,22 @@ public class Feedback extends AppCompatActivity {
         int[]  percent ={(int)total1, (int)total2, (int)total3};
        myAdaptar adapter=new myAdaptar(this,catogery,percent);
         l.setAdapter(adapter);
+
+       TextView t= (TextView)findViewById(R.id.textView5);
+        if(hoursDone<hoursExpected){
+            t.setText("Stick to your schedule or plan realistically");
+
+        }
+        if(hoursDone>10){
+            t.setText("Try to sleep a little bit less");
+
+        }
+        if(hoursDone<4){
+            t.setText("Try to sleep a little bit more");
+        }
+
     }
+
 
 }
 
