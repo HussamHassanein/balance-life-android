@@ -43,10 +43,12 @@
         android:layout_marginTop="45dp"
         android:text="My plan"
         android:padding="25dip"
-        android:background="@android:color/white"
+
         android:onClick="goToMyPlan"
         android:layout_below="@+id/textview"
-        android:layout_alignStart="@+id/review" />
+        android:layout_alignStart="@+id/review"
+        android:textColor="@android:color/white"
+        android:background="#d9534f"/>
 
     <Button
         android:id="@+id/review"
@@ -57,8 +59,10 @@
         android:layout_below="@+id/myplan"
         android:layout_alignStart="@+id/feedback"
         android:padding="25dip"
-        android:background="@android:color/white"
-        android:onClick="goToReview"/>
+
+        android:onClick="goToReview"
+        android:textColor="@android:color/white"
+        android:background="#d9534f"/>
 
     <Button
         android:id="@+id/feedback"
@@ -69,9 +73,10 @@
         android:layout_below="@+id/review"
         android:layout_centerHorizontal="true"
         android:padding="25dip"
-        android:background="@android:color/white"
+
         android:onClick="goToFeedback"
-        />
+        android:textColor="@android:color/white"
+        android:background="#d9534f" />
 
     <TextView
         android:id="@+id/textview"
@@ -85,5 +90,15 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
         android:layout_marginTop="13dp" />
+
+  <!--  <Button
+        android:id="@+id/gotoeff"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/feedback"
+        android:layout_below="@+id/feedback"
+        android:layout_marginTop="20dp"
+        android:text="Button"
+        android:onClick="gotoeffciency"/> -->
 
 </RelativeLayout>

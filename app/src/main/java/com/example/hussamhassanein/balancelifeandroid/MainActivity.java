@@ -11,6 +11,8 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 
+
+
 import java.io.File;
 
 public class MainActivity extends AppCompatActivity {
@@ -40,4 +42,9 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+
+   /* public void gotoeffciency(View view) {
+        Intent intent = new Intent(this, Efficiency.class);
+        startActivity(intent);
+    }*/
 }

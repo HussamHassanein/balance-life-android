@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    android:background="#0E7C7B">
+
+    <Button
+        android:id="@+id/buttontask"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/edittask"
+        android:layout_marginTop="13dp"
+        android:text="ADDTASK"
+        android:onClick="addTasks"
+        android:textColor="@android:color/white"
+        android:background="#d9534f"/>
+
+    <EditText
+        android:id="@+id/edittask"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="11dp"
+        android:hint="Write down your task"
+       />
+
+    <ListView
+        android:id="@+id/liststask"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/buttontask"
+        android:textColor="#FFFFFF"/>
+
+    <Button
+        android:id="@+id/savetask"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/liststask"
+        android:onClick="saveList"
+        android:text="Submit"
+        android:textColor="@android:color/white"
+        android:background="@android:color/black"/>
+
+    <TextView
+        android:id="@+id/showresult"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignBottom="@+id/liststask"
+        android:layout_alignTop="@+id/savetask" />
+
+ <Button
+        android:id="@+id/Deletebut"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/liststask"
+        android:layout_alignParentStart="true"
+        android:onClick="delettask"
+        android:text="Deletetask"
+     android:textColor="@android:color/white"
+     android:background="#d9534f"/>
+</RelativeLayout>
