@@ -63,6 +63,14 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MyPlan" />
         </activity>
+      <!--  <activity
+            android:name=".planCategories.Efficiency"
+            android:label="efficiency"
+            android:screenOrientation="portrait" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MyPlan" />
+        </activity>-->
         <activity
             android:name=".planCategories.Social"
             android:label="social"

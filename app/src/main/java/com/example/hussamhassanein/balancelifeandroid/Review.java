@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -55,6 +56,7 @@ public class Review extends AppCompatActivity {
         setContentView(R.layout.review);
         getSupportActionBar().setTitle("Review");
 
+      //  Check("Social");
         Check("Social");
         Check("Exercise");
         Check("StudiesAndWork");
@@ -68,28 +70,11 @@ public class Review extends AppCompatActivity {
 
         SharedPreferences share = getSharedPreferences("MY_DATA", Context.MODE_PRIVATE);
         String plan = share.getString(category, null);
-        String[] splitArray = null;
-        try {
-            splitArray = plan.split("[\\r\\n]+");
-        } catch (PatternSyntaxException ex) {
-            //
-        }
 
-        List list =  new ArrayList<String>();
-        Collections.addAll(list, splitArray);
-        for(int i = 0 ;i < splitArray.length;i++){
-            if(list.get(i).equals("")){
-                list.remove( new Integer(i));
-            }
-
-        }
-        SharedPreferences.Editor editor= share.edit();
-        int length=splitArray.length;
-        String  str=category+"len";
-        editor.putInt(str, length);
-        editor.commit();
-
-        splitArray = (String[]) list.toArray(new String[list.size()]);
+     ArrayList<String> socialtask;
+        String[] splitArray = plan.split(",");
+        List<String> ls = Arrays.<String>asList(splitArray);
+        socialtask= new ArrayList<String>(ls);
 
 
         if(category.equals("Social")) {
@@ -97,7 +82,8 @@ public class Review extends AppCompatActivity {
             l.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
 
             //ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,R.layout.rowlayout,R.id.txt_lan,splitArray);
-            ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.select_dialog_multichoice, splitArray);
+           // ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.select_dialog_multichoice, splitArray);
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.select_dialog_multichoice,  socialtask);
             l.setAdapter(adapter);
             ListUtils.setDynamicHeight(l);
             l.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -118,7 +104,7 @@ public class Review extends AppCompatActivity {
             l.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
 
             //ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,R.layout.rowlayout,R.id.txt_lan,splitArray);
-            ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.select_dialog_multichoice, splitArray);
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.select_dialog_multichoice, socialtask);
             l.setAdapter(adapter);
             ListUtils.setDynamicHeight(l);
             l.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -140,7 +126,7 @@ public class Review extends AppCompatActivity {
             l.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
 
             //ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,R.layout.rowlayout,R.id.txt_lan,splitArray);
-            ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.select_dialog_multichoice, splitArray);
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.select_dialog_multichoice, socialtask);
             l.setAdapter(adapter);
             ListUtils.setDynamicHeight(l);
 
@@ -216,6 +202,7 @@ public class Review extends AppCompatActivity {
     }
 
     public void ShowChecked(View view) {
+
         SharedPreferences shared=getSharedPreferences("MY_DATA",Context.MODE_PRIVATE);
         SharedPreferences.Editor editor= shared.edit();
 
@@ -224,13 +211,82 @@ public class Review extends AppCompatActivity {
         editor.putInt("SoChLength",checkedelement.size());
         editor.putInt("ExChLength",checkedExercise.size());
         editor.putInt("StChLength",checkedStudies.size());
-        editor.putString("SocialChecked", String.valueOf(checkedelement));
-        editor.putString("ExerciseChecked", String.valueOf(checkedExercise));
-        editor.putString("StudiesChecked", String.valueOf(checkedStudies));
+
         editor.putInt("hoursDone",r );
 
-        String plan = shared.getString("Social", null);
-        String[] splitArray = null;
+
+        // social get the length and update the database
+        String social = shared.getString("Social", null);
+        String[] splitsocial = social.split(",");
+        List<String> ls = Arrays.<String>asList(splitsocial);
+        ArrayList<String> socialtask= new ArrayList<String>(ls);
+        socialtask.removeAll(checkedelement);
+        String joined = TextUtils.join(", ",socialtask);
+        editor.putString("Social",  joined);
+        editor.putInt("SocialLength",splitsocial.length);
+
+
+        // exercise get the length and update the database
+        String exercise = shared.getString("Exercise", null);
+        String[] splitexe = exercise.split(",");
+        List<String> es = Arrays.<String>asList(splitexe);
+        ArrayList<String> exetask= new ArrayList<String>(es);
+        exetask.removeAll(checkedExercise);
+        String exjoined = TextUtils.join(", ",exetask);
+        editor.putString("Exercise",  exjoined);
+        editor.putInt("ExLength",splitexe.length);
+
+
+       //studyandwork length and update the database
+        String studynwork = shared.getString("StudiesAndWork", null);
+        String[] splitsandw = studynwork.split(",");
+        List<String> study = Arrays.<String>asList(splitsandw);
+        ArrayList<String> studytask= new ArrayList<String>(study);
+        studytask.removeAll(checkedStudies);
+        String studyjoined = TextUtils.join(", ",studytask);
+        editor.putString("StudiesAndWork",  studyjoined);
+        editor.putInt("StLength",splitsandw.length);
+       // commit everything
+        editor.commit();
+
+        Intent intent = new Intent(this, Feedback.class);
+        startActivity(intent);
+
+
+    }
+
+
+
+}
+/*  String[] splitArray = null;
+        try {
+            splitArray = plan.split("[\\r\\n]+");
+        } catch (PatternSyntaxException ex) {
+            //
+        }
+
+        List list =  new ArrayList<String>();
+        Collections.addAll(list, splitArray);
+        for(int i = 0 ;i < splitArray.length;i++){
+            if(list.get(i).equals("")){
+                list.remove( new Integer(i));
+            }
+
+        }*/
+/*SharedPreferences.Editor editor= share.edit();
+        int length=splitArray.length;
+        String  str=category+"len";
+        editor.putInt(str, length);
+        editor.commit();*/
+
+// splitArray = (String[]) list.toArray(new String[list.size()]);
+
+
+
+//editor.putString("SocialChecked", String.valueOf(checkedelement));
+//editor.putString("ExerciseChecked", String.valueOf(checkedExercise));
+//editor.putString("StudiesChecked", String.valueOf(checkedStudies));
+      /*  String[] splitArray = null;
         try {
             splitArray = plan.split("[\\r\\n]+");
         } catch (PatternSyntaxException ex) {
@@ -253,7 +309,11 @@ public class Review extends AppCompatActivity {
 
         editor.remove("Social");
         editor.putString("Social", iHateThis);
+        ArrayList<String> socialtask;
+        String[] splitArray = plan.split(",");
+        List<String> ls = Arrays.<String>asList(splitArray);
 
+        socialtask= new ArrayList<String>(ls);
 
         String plan2 = shared.getString("Exercise", null);
         String[] splitArray2 = null;
@@ -317,13 +377,4 @@ public class Review extends AppCompatActivity {
         editor.putInt("ExLength",union2.size());
         editor.putInt("StLength",union3.size());
 
-
-        editor.commit();
-        Intent intent = new Intent(this, Feedback.class);
-        startActivity(intent);
-
-
-    }
-
-
-}
+*/
