@@ -19,7 +19,7 @@
         android:gravity="left|center_vertical"
         android:onClick="goToSleep"
         android:textColor="@android:color/white"
-        android:background="@android:color/holo_red_light"
+        android:background="#d9534f"
         />
 
     <Button
@@ -35,7 +35,7 @@
         android:gravity="left|center_vertical"
         android:onClick="goToSocial"
         android:textColor="@android:color/white"
-        android:background="@android:color/holo_red_light"
+        android:background="#d9534f"
         />
 
     <Button
@@ -51,7 +51,7 @@
         android:gravity="left|center_vertical"
         android:onClick="goToExercise"
         android:textColor="@android:color/white"
-        android:background="@android:color/holo_red_light"
+        android:background="#d9534f"
         />
     <Button
         android:id="@+id/workandstudies"
@@ -66,7 +66,7 @@
         android:gravity="left|center_vertical"
         android:onClick="goToWork"
         android:textColor="@android:color/white"
-        android:background="@android:color/holo_red_light"
+        android:background="#d9534f"
 
         />
 

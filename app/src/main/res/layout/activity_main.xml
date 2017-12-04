@@ -48,7 +48,7 @@
         android:layout_below="@+id/textview"
         android:layout_alignStart="@+id/review"
         android:textColor="@android:color/white"
-        android:background="@android:color/holo_red_light"/>
+        android:background="#d9534f"/>
 
     <Button
         android:id="@+id/review"
@@ -62,7 +62,7 @@
 
         android:onClick="goToReview"
         android:textColor="@android:color/white"
-        android:background="@android:color/holo_red_light"/>
+        android:background="#d9534f"/>
 
     <Button
         android:id="@+id/feedback"
@@ -76,7 +76,7 @@
 
         android:onClick="goToFeedback"
         android:textColor="@android:color/white"
-        android:background="@android:color/holo_red_light" />
+        android:background="#d9534f" />
 
     <TextView
         android:id="@+id/textview"
