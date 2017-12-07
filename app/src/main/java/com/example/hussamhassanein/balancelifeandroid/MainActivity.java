@@ -51,12 +51,10 @@ public class MainActivity extends AppCompatActivity {
         auth = FirebaseAuth.getInstance(app);
         storage = FirebaseStorage.getInstance(app);
 // Get a reference to our chat "room" in the database
-        databaseRef = database.getReference().child("category/workk");
-        databaseRef2 = database2.getReference().child("category/exercisee");
+
 
         // Push the chat message to the database
-        databaseRef.push().setValue(g);
-        databaseRef2.push().setValue(g);
+
 
     }
 

@@ -51,27 +51,21 @@ import java.util.regex.PatternSyntaxException;
 
 public class Social extends AppCompatActivity {
     private ArrayList<String> socialtask;
+    private ArrayList<String> socialkey=new ArrayList<>();
     private ArrayAdapter<String > adaptertask;
-    ListView l;
-    TextView t;
+    private ListView l;
     public EditText listAdd;
-    Boolean edit = false;
-    int oldposition=10000;
-
-
+    private  Boolean edit = false;
+    private int oldposition=1000;
     private FirebaseApp app;
     private FirebaseDatabase database;
     private FirebaseAuth auth;
     private FirebaseStorage storage;
     private DatabaseReference databaseRef;
-    private StorageReference storageRef;
-    String userId;
-    String name;
-    ArrayList<String> names;
-    HashSet<String> tasks= new HashSet<>();
     private DatabaseReference mDatabase;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // On create
         super.onCreate(savedInstanceState);
         setContentView(R.layout.efficiency);
 
@@ -81,150 +75,48 @@ public class Social extends AppCompatActivity {
         database = FirebaseDatabase.getInstance(app);
         auth = FirebaseAuth.getInstance(app);
         storage = FirebaseStorage.getInstance(app);
-
-
-       mDatabase = FirebaseDatabase.getInstance().getReference("category/social");
-
-
-
-
-// Get a reference to our chat "room" in the database
+      // Get a reference to our chat "room" in the database
         databaseRef = database.getReference("category/social");
-       // databaseRef.getKey();
+        mDatabase = FirebaseDatabase.getInstance().getReference("category/social");
 
-       /* databaseRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
-                     //names= new ArrayList<>();
-                    int i = 0;
-                    for(DataSnapshot d : dataSnapshot.getChildren()) {
-                        //names.add(d.getValue().toString());
-                        tasks.add(d.getValue().toString());
-                       //  d.getKey();
-                           i++;
-                        //name[i] = dataSnapshot.getValue().toString();
-
-
-                    }
-                    TextView t = (TextView) findViewById(R.id.textView32);
-                 t.setText(gooo.toString());
-                }
-            }//onDataChange
-                //    name[i] = d.getKey();
-
-                    //  name[i] = dataSnapshot.getValue().toString();
-                 //   TextView t = (TextView) findViewById(R.id.textView32);
-                  //  t.setText(name[i]);
-
-                    //   mshowdata(dataSnapshot);
-
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-
-
-        });*/
-       // addListenerForSingleValueEvent()
-   /* databaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
-       // ValueEventListener postListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                // Get Post object and use the values to update the UI
-                if (dataSnapshot.exists()) {
-                    for(DataSnapshot d : dataSnapshot.getChildren()) {
-                        tasks.add(d.getValue().toString());
-                    }
-                }
-                // ...
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                // Getting Post failed, log a message
-             //   Log.w(TAG, "loadPost:onCancelled", databaseError.toException());
-                // ...
-            }
-        });
-
-        //databaseRef.addValueEventListener(postListener);
-
-        /*TextView  showText =(TextView) findViewById(R.id.textt);
-        SharedPreferences share=getSharedPreferences("MY_DATA", Context.MODE_PRIVATE);
-        String result1=share.getString("Social",null);
-        if (result1!=null) {
-            showText.append(result1 + "\n");
-        }*/
-
-
-
-        /*SharedPreferences share = getSharedPreferences("MY_DATA", Context.MODE_PRIVATE);
-        String result1 = share.getString("Social", null);
-
-
-
-
-
-
-        t = (TextView) findViewById(R.id.showresult);//check
-        String[] mylist = new String[0];
-
-
-            if(!result1.equals("")) {
-              mylist = result1.split(","); // split the plan tasks to  string[]
-            }
-
-            List<String> ls = Arrays.<String>asList(mylist); // change from string[] to Arraylist<String>
-        //tasks.add("hello");
-
-*/
         listAdd = (EditText) findViewById(R.id.edittask);
         l = (ListView) findViewById(R.id.liststask);
-            socialtask = new ArrayList<String>();// add it to lists of plan
-            //adaptertask = new mycustomAdaptar(this, socialtask);
-
-
-    adaptertask = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, socialtask);
+        socialtask = new ArrayList<String>();// add it to lists of plan
+        adaptertask = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, socialtask);
         l.setAdapter(adaptertask);
         mDatabase.addChildEventListener(new ChildEventListener() {
        @Override
        public void onChildAdded(DataSnapshot dataSnapshot, String s) {
 
            String task=dataSnapshot.getValue(String.class);
+           String key=dataSnapshot.getKey();
+           socialkey.add(key);
            socialtask.add(task);
            adaptertask.notifyDataSetChanged();
 
        }
 
-       @Override
-       public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-           String task=dataSnapshot.getValue(String.class);
-           edit = false;
-           socialtask.set(oldposition, task);
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
 
-           listAdd.setText("");
-           oldposition=1000;
-           adaptertask.notifyDataSetChanged();
+            }
 
-       }
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
 
-       @Override
-       public void onChildRemoved(DataSnapshot dataSnapshot) {
+            }
 
-       }
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
 
-       @Override
-       public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+            }
 
-       }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
 
-       @Override
-       public void onCancelled(DatabaseError databaseError) {
+            }
 
-       }
-   });
+        });
           //  l.setAdapter(adaptertask);
     
         l.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -240,9 +132,7 @@ public class Social extends AppCompatActivity {
             }
         });
 
-
     }
-
 
 
     public void addTasks(View view) {
@@ -253,8 +143,14 @@ public class Social extends AppCompatActivity {
         if (edit && !toDo.isEmpty()&& oldposition!=1000) {
 
             edit = false;
+            String oldtask=socialtask.get(oldposition);
+            int index=socialtask.indexOf(oldtask);
+            String k =socialkey.get(index);
             socialtask.set(oldposition, toDo);
+            databaseRef.child(k).setValue(toDo);
 
+            //Log.d("myTag",k);
+            //databaseRef.child(k).setValue(toDo);
             listAdd.setText("");
             oldposition=1000;
             adaptertask.notifyDataSetChanged();
@@ -266,26 +162,15 @@ public class Social extends AppCompatActivity {
             listAdd.setText("");
 
 
-
+            databaseRef.push().setValue(toDo);
 
         }
+
         // Push the chat message to the database
-        databaseRef.push().setValue(toDo);
+
     }
 
     public void saveList(View view) {
-
-
-        StringBuilder listtask = new StringBuilder();
-        for (String s : socialtask) {
-            listtask.append(s);
-            listtask.append(",");
-        }
-        SharedPreferences prefs = getSharedPreferences("MY_DATA", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.putString("Social", listtask.toString());
-        editor.commit();
-
 
 
 
@@ -300,6 +185,12 @@ public class Social extends AppCompatActivity {
         if (toDo.isEmpty()) {
             return;
         }
+        // get the index of key and remove its value from database and adapter
+        String oldtask=socialtask.get(oldposition);
+        int index=socialtask.indexOf(oldtask);
+        String k =socialkey.get(index);
+        databaseRef.child(k).removeValue();
+        socialkey.remove(index);
         socialtask.remove(oldposition);
         adaptertask.notifyDataSetChanged();
         listAdd.setText("");
@@ -311,89 +202,16 @@ public class Social extends AppCompatActivity {
 
 }
 
-// FirebaseUser user =auth.getCurrentUser();
-//   userId=user.getUid();
 /*
-
-        databaseRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-         //   mshowdata(dataSnapshot);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-*/
-/*
-    private void mshowdata(DataSnapshot dataSnapshot) {
-        for(DataSnapshot ds : dataSnapshot.getChildren()){
-            TaskObject Tobject =new TaskObject();
-            Tobject.setTask(ds.child(userId).getValue(TaskObject.class).getTask()); //set task
-            Tobject.setId(ds.child(userId).getValue(TaskObject.class).getId()); //set task
-            //display all the information
-           // Log.d("", "showData: id: " + Tobject.getId());
-           // Log.d("", "showData: task: " + Tobject.getTask());
+        StringBuilder listtask = new StringBuilder();
+        for (String s : socialtask) {
+            listtask.append(s);
+            listtask.append(",");
         }
-
-    }
-
-*/
-/*public void printText(View view){
-
-
-        TextView  showText =(TextView) findViewById(R.id.textt);
-        EditText editText = (EditText) findViewById(R.id.taskSocial);
-
-        if(editText.getText().toString().equals("")) {
-            AlertDialog alertDialog = new AlertDialog.Builder(Social.this).create();
-            alertDialog.setTitle("Alert");
-            alertDialog.setMessage("Please write a task");
-            alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
-                    new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    });
-            alertDialog.show();
-        }
-        else{
-            showText.append(editText.getText().toString() + "\n");
-
-
-        }
-        editText.setText("");
-
-    }
-
-    public void confirmSocial(View view){
         SharedPreferences prefs = getSharedPreferences("MY_DATA", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor =prefs.edit();
-        TextView  showText =(TextView) findViewById(R.id.textt);
-        String[] splitArray = null;
-        try {
-            splitArray = showText.getText().toString().split("[\\r\\n]+");
-        } catch (PatternSyntaxException ex) {
-            //
-        }
-
-        List list =  new ArrayList<String>();
-        Collections.addAll(list, splitArray);
-        for(int i = 0 ;i < splitArray.length;i++){
-            if(list.get(i).equals("")){
-                list.remove( new Integer(i));
-            }
-
-        }
-        splitArray = (String[]) list.toArray(new String[list.size()]);
-
-        editor.putInt("SocialLength",splitArray.length);
-        editor.putString("Social",showText.getText().toString());
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString("Social", listtask.toString());
         editor.commit();
-        Intent intent = new Intent(this, MyPlan.class);
-        startActivity(intent);
-    }
+
 
 */
