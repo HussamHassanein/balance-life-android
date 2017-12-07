@@ -27,6 +27,7 @@ import com.example.hussamhassanein.balancelifeandroid.TaskObject;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -54,8 +55,8 @@ public class Social extends AppCompatActivity {
     ListView l;
     TextView t;
     public EditText listAdd;
- Boolean edit = false;
- int oldposition=10000;
+    Boolean edit = false;
+    int oldposition=10000;
 
 
     private FirebaseApp app;
@@ -67,8 +68,8 @@ public class Social extends AppCompatActivity {
     String userId;
     String name;
     ArrayList<String> names;
-    HashSet<String> gooo= new HashSet<>();
-
+    HashSet<String> tasks= new HashSet<>();
+    private DatabaseReference mDatabase;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,11 +82,17 @@ public class Social extends AppCompatActivity {
         auth = FirebaseAuth.getInstance(app);
         storage = FirebaseStorage.getInstance(app);
 
+
+       mDatabase = FirebaseDatabase.getInstance().getReference("category/social");
+
+
+
+
 // Get a reference to our chat "room" in the database
         databaseRef = database.getReference("category/social");
        // databaseRef.getKey();
 
-        databaseRef.addValueEventListener(new ValueEventListener() {
+       /* databaseRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
@@ -93,15 +100,15 @@ public class Social extends AppCompatActivity {
                     int i = 0;
                     for(DataSnapshot d : dataSnapshot.getChildren()) {
                         //names.add(d.getValue().toString());
-                        gooo.add(d.getValue().toString());
+                        tasks.add(d.getValue().toString());
                        //  d.getKey();
                            i++;
                         //name[i] = dataSnapshot.getValue().toString();
 
 
                     }
-                //    TextView t = (TextView) findViewById(R.id.textView32);
-                //    t.setText(gooo.toString());
+                    TextView t = (TextView) findViewById(R.id.textView32);
+                 t.setText(gooo.toString());
                 }
             }//onDataChange
                 //    name[i] = d.getKey();
@@ -117,7 +124,32 @@ public class Social extends AppCompatActivity {
             public void onCancelled(DatabaseError databaseError) {
 
             }
+
+
+        });*/
+       // addListenerForSingleValueEvent()
+   /* databaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
+       // ValueEventListener postListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // Get Post object and use the values to update the UI
+                if (dataSnapshot.exists()) {
+                    for(DataSnapshot d : dataSnapshot.getChildren()) {
+                        tasks.add(d.getValue().toString());
+                    }
+                }
+                // ...
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Getting Post failed, log a message
+             //   Log.w(TAG, "loadPost:onCancelled", databaseError.toException());
+                // ...
+            }
         });
+
+        //databaseRef.addValueEventListener(postListener);
 
         /*TextView  showText =(TextView) findViewById(R.id.textt);
         SharedPreferences share=getSharedPreferences("MY_DATA", Context.MODE_PRIVATE);
@@ -125,25 +157,75 @@ public class Social extends AppCompatActivity {
         if (result1!=null) {
             showText.append(result1 + "\n");
         }*/
-        SharedPreferences share = getSharedPreferences("MY_DATA", Context.MODE_PRIVATE);
+
+
+
+        /*SharedPreferences share = getSharedPreferences("MY_DATA", Context.MODE_PRIVATE);
         String result1 = share.getString("Social", null);
 
-        l = (ListView) findViewById(R.id.liststask);
+
+
+
+
+
         t = (TextView) findViewById(R.id.showresult);//check
         String[] mylist = new String[0];
-          
-            listAdd = (EditText) findViewById(R.id.edittask);
+
+
             if(!result1.equals("")) {
               mylist = result1.split(","); // split the plan tasks to  string[]
             }
 
             List<String> ls = Arrays.<String>asList(mylist); // change from string[] to Arraylist<String>
-            socialtask = new ArrayList<String>(gooo);// add it to lists of plan
+        //tasks.add("hello");
+
+*/
+        listAdd = (EditText) findViewById(R.id.edittask);
+        l = (ListView) findViewById(R.id.liststask);
+            socialtask = new ArrayList<String>();// add it to lists of plan
             //adaptertask = new mycustomAdaptar(this, socialtask);
 
-    adaptertask = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, socialtask);
 
-            l.setAdapter(adaptertask);
+    adaptertask = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, socialtask);
+        l.setAdapter(adaptertask);
+        mDatabase.addChildEventListener(new ChildEventListener() {
+       @Override
+       public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+
+           String task=dataSnapshot.getValue(String.class);
+           socialtask.add(task);
+           adaptertask.notifyDataSetChanged();
+
+       }
+
+       @Override
+       public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+           String task=dataSnapshot.getValue(String.class);
+           edit = false;
+           socialtask.set(oldposition, task);
+
+           listAdd.setText("");
+           oldposition=1000;
+           adaptertask.notifyDataSetChanged();
+
+       }
+
+       @Override
+       public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+       }
+
+       @Override
+       public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+       }
+
+       @Override
+       public void onCancelled(DatabaseError databaseError) {
+
+       }
+   });
+          //  l.setAdapter(adaptertask);
     
         l.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
@@ -161,36 +243,7 @@ public class Social extends AppCompatActivity {
 
     }
 
-    // FirebaseUser user =auth.getCurrentUser();
-    //   userId=user.getUid();
-/*
 
-        databaseRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-         //   mshowdata(dataSnapshot);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-*/
-/*
-    private void mshowdata(DataSnapshot dataSnapshot) {
-        for(DataSnapshot ds : dataSnapshot.getChildren()){
-            TaskObject Tobject =new TaskObject();
-            Tobject.setTask(ds.child(userId).getValue(TaskObject.class).getTask()); //set task
-            Tobject.setId(ds.child(userId).getValue(TaskObject.class).getId()); //set task
-            //display all the information
-           // Log.d("", "showData: id: " + Tobject.getId());
-           // Log.d("", "showData: task: " + Tobject.getTask());
-        }
-
-    }
-
-*/
 
     public void addTasks(View view) {
 
@@ -209,7 +262,7 @@ public class Social extends AppCompatActivity {
         } else if (toDo.isEmpty()) {
             return;
         } else {
-            adaptertask.add(toDo);
+           // adaptertask.add(toDo);
             listAdd.setText("");
 
 
@@ -258,7 +311,36 @@ public class Social extends AppCompatActivity {
 
 }
 
+// FirebaseUser user =auth.getCurrentUser();
+//   userId=user.getUid();
+/*
 
+        databaseRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+         //   mshowdata(dataSnapshot);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+*/
+/*
+    private void mshowdata(DataSnapshot dataSnapshot) {
+        for(DataSnapshot ds : dataSnapshot.getChildren()){
+            TaskObject Tobject =new TaskObject();
+            Tobject.setTask(ds.child(userId).getValue(TaskObject.class).getTask()); //set task
+            Tobject.setId(ds.child(userId).getValue(TaskObject.class).getId()); //set task
+            //display all the information
+           // Log.d("", "showData: id: " + Tobject.getId());
+           // Log.d("", "showData: task: " + Tobject.getTask());
+        }
+
+    }
+
+*/
 /*public void printText(View view){
 
 
