@@ -10,6 +10,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -22,12 +23,23 @@ import android.widget.TextView;
 import com.example.hussamhassanein.balancelifeandroid.MainActivity;
 import com.example.hussamhassanein.balancelifeandroid.MyPlan;
 import com.example.hussamhassanein.balancelifeandroid.R;
-
+import com.example.hussamhassanein.balancelifeandroid.TaskObject;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.regex.PatternSyntaxException;
 
@@ -44,10 +56,68 @@ public class Social extends AppCompatActivity {
     public EditText listAdd;
  Boolean edit = false;
  int oldposition=10000;
+
+
+    private FirebaseApp app;
+    private FirebaseDatabase database;
+    private FirebaseAuth auth;
+    private FirebaseStorage storage;
+    private DatabaseReference databaseRef;
+    private StorageReference storageRef;
+    String userId;
+    String name;
+    ArrayList<String> names;
+    HashSet<String> gooo= new HashSet<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.efficiency);
+
+
+        // Get the Firebase app and all primitives we'll use
+        app = FirebaseApp.getInstance();
+        database = FirebaseDatabase.getInstance(app);
+        auth = FirebaseAuth.getInstance(app);
+        storage = FirebaseStorage.getInstance(app);
+
+// Get a reference to our chat "room" in the database
+        databaseRef = database.getReference("category/social");
+       // databaseRef.getKey();
+
+        databaseRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                     //names= new ArrayList<>();
+                    int i = 0;
+                    for(DataSnapshot d : dataSnapshot.getChildren()) {
+                        //names.add(d.getValue().toString());
+                        gooo.add(d.getValue().toString());
+                       //  d.getKey();
+                           i++;
+                        //name[i] = dataSnapshot.getValue().toString();
+
+
+                    }
+                //    TextView t = (TextView) findViewById(R.id.textView32);
+                //    t.setText(gooo.toString());
+                }
+            }//onDataChange
+                //    name[i] = d.getKey();
+
+                    //  name[i] = dataSnapshot.getValue().toString();
+                 //   TextView t = (TextView) findViewById(R.id.textView32);
+                  //  t.setText(name[i]);
+
+                    //   mshowdata(dataSnapshot);
+
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
         /*TextView  showText =(TextView) findViewById(R.id.textt);
         SharedPreferences share=getSharedPreferences("MY_DATA", Context.MODE_PRIVATE);
@@ -57,6 +127,7 @@ public class Social extends AppCompatActivity {
         }*/
         SharedPreferences share = getSharedPreferences("MY_DATA", Context.MODE_PRIVATE);
         String result1 = share.getString("Social", null);
+
         l = (ListView) findViewById(R.id.liststask);
         t = (TextView) findViewById(R.id.showresult);//check
         String[] mylist = new String[0];
@@ -67,10 +138,10 @@ public class Social extends AppCompatActivity {
             }
 
             List<String> ls = Arrays.<String>asList(mylist); // change from string[] to Arraylist<String>
-            socialtask = new ArrayList<String>(ls);// add it to lists of plan
+            socialtask = new ArrayList<String>(gooo);// add it to lists of plan
             //adaptertask = new mycustomAdaptar(this, socialtask);
 
-            adaptertask = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, socialtask);
+    adaptertask = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, socialtask);
 
             l.setAdapter(adaptertask);
     
@@ -87,9 +158,39 @@ public class Social extends AppCompatActivity {
             }
         });
 
+
     }
 
+    // FirebaseUser user =auth.getCurrentUser();
+    //   userId=user.getUid();
+/*
 
+        databaseRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+         //   mshowdata(dataSnapshot);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+*/
+/*
+    private void mshowdata(DataSnapshot dataSnapshot) {
+        for(DataSnapshot ds : dataSnapshot.getChildren()){
+            TaskObject Tobject =new TaskObject();
+            Tobject.setTask(ds.child(userId).getValue(TaskObject.class).getTask()); //set task
+            Tobject.setId(ds.child(userId).getValue(TaskObject.class).getId()); //set task
+            //display all the information
+           // Log.d("", "showData: id: " + Tobject.getId());
+           // Log.d("", "showData: task: " + Tobject.getTask());
+        }
+
+    }
+
+*/
 
     public void addTasks(View view) {
 
@@ -110,7 +211,13 @@ public class Social extends AppCompatActivity {
         } else {
             adaptertask.add(toDo);
             listAdd.setText("");
+
+
+
+
         }
+        // Push the chat message to the database
+        databaseRef.push().setValue(toDo);
     }
 
     public void saveList(View view) {
@@ -125,6 +232,10 @@ public class Social extends AppCompatActivity {
         SharedPreferences.Editor editor = prefs.edit();
         editor.putString("Social", listtask.toString());
         editor.commit();
+
+
+
+
         Intent intent = new Intent(this, MyPlan.class);
         startActivity(intent);
 

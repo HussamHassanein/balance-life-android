@@ -12,10 +12,27 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.bumptech.glide.Glide;
 
 import java.io.File;
 
 public class MainActivity extends AppCompatActivity {
+
+    private FirebaseApp app;
+    private FirebaseDatabase database;
+    private FirebaseDatabase database2;
+    private FirebaseAuth auth;
+    private FirebaseStorage storage;
+    private DatabaseReference databaseRef;
+    private DatabaseReference databaseRef2;
+
+    private StorageReference storageRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +42,22 @@ public class MainActivity extends AppCompatActivity {
 
         if (f != null)
             Log.i("TAG", f.getAbsolutePath());
+
+        String g="dd";
+        // Get the Firebase app and all primitives we'll use
+        app = FirebaseApp.getInstance();
+        database = FirebaseDatabase.getInstance(app);
+        database2=FirebaseDatabase.getInstance(app);
+        auth = FirebaseAuth.getInstance(app);
+        storage = FirebaseStorage.getInstance(app);
+// Get a reference to our chat "room" in the database
+        databaseRef = database.getReference().child("category/workk");
+        databaseRef2 = database2.getReference().child("category/exercisee");
+
+        // Push the chat message to the database
+        databaseRef.push().setValue(g);
+        databaseRef2.push().setValue(g);
+
     }
 
 
