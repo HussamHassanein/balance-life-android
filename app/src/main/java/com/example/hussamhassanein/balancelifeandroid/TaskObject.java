@@ -8,7 +8,9 @@ public class TaskObject {
     private String  id;
     private String task;
 
-    public TaskObject(){
+    public TaskObject(String key,String task){
+        this.id=key;
+        this.task=task;
 
     }
 

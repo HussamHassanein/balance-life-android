@@ -23,12 +23,25 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.regex.PatternSyntaxException;
+
+import static bolts.Task.delay;
+import static java.lang.Thread.sleep;
 
 
 /**
@@ -38,116 +51,257 @@ import java.util.regex.PatternSyntaxException;
 public class Review extends AppCompatActivity {
 
    
-    ListView l;
+    //ListView l;
+    ArrayList<String> socialtask;
+    ArrayList<String> exetask;
+    ArrayList<String> worktask;
     ArrayList<String> checkedelement= new ArrayList<>();
     ArrayList<String> checkedExercise= new ArrayList<>();
     ArrayList<String> checkedStudies= new ArrayList<>();
-
     ArrayList<String> newd= new ArrayList<>();
-
+    ArrayAdapter<String> adapter;
+    ArrayAdapter<String> adapters;
+    ArrayAdapter<String> adapterw;
     Spinner sleepHours;
-
-
-
+    int check=0;
+    private FirebaseApp app;
+   private FirebaseDatabase database;
+   private FirebaseAuth auth;
+   private FirebaseStorage storage;
+   private DatabaseReference databaseRef;
+   private DatabaseReference mDatabase;
+   private DatabaseReference wDatabase;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.review);
         getSupportActionBar().setTitle("Review");
+       app = FirebaseApp.getInstance();
+       database = FirebaseDatabase.getInstance(app);
+        auth = FirebaseAuth.getInstance(app);
+       storage = FirebaseStorage.getInstance(app);
+        // Get a reference to our chat "room" in the database
+      /*  databaseRef = database.getReference("category/social");
+        mDatabase =  FirebaseDatabase.getInstance().getReference();
+        ArrayList<String> getlists= new ArrayList<>();
+       // socialtask=new ArrayList<>();
+        socialtask = myFirebase(getlists,databaseRef);
+       while (check == 0){}
+       delay(10);
+       ListView list=(ListView) findViewById(R.id.checkview);
+       check(socialtask ,list,checkedelement);
+       check=0;
 
-      //  Check("Social");
-        Check("Social");
-        Check("Exercise");
-        Check("StudiesAndWork");
+        databaseRef = database.getReference("category/exercise");
+        getlists= new ArrayList<>();
+        exetask=new ArrayList<>();
+        exetask = myFirebase(getlists,databaseRef);
+        while (check == 0){}
+      list=(ListView) findViewById(R.id.exerciseList);
+        check(exetask,list,checkedExercise);
+        check=0;
+        databaseRef = database.getReference("category/work");
+
+        getlists= new ArrayList<>();
+        worktask=new ArrayList<>();
+        worktask = myFirebase(getlists,databaseRef);
+        while (check == 0){}
+        list=(ListView) findViewById(R.id.studiesandworkList);
+        check(worktask,list,checkedStudies);
+        check=0;*/
+       // ListUtils.setDynamicHeight( list);
+
+
+      // mDatabase = database.getReference("category/exercise");
+        // Check("Social",databaseRef);
+        // Check("category/social", mDatabase);
+       // Check("category/exercise");
+       // Check("category/work");
         sleepHours = (Spinner) findViewById(R.id.hrSpinner);
+        final ListView l = (ListView) findViewById(R.id.checkview);
+        l.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
         Context context;
+        socialtask= new ArrayList<String>();
+        adapter = new ArrayAdapter<String>(this, android.R.layout.select_dialog_multichoice,  socialtask);
+        l.setAdapter(adapter);
 
+        databaseRef = database.getReference("category/social");
+
+        databaseRef.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+
+                socialtask.add(dataSnapshot.getValue(String.class));
+                adapter.notifyDataSetChanged();
+               setDynamicHeight(l);
+
+            }
+          public  boolean wat=true;
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+
+        });
+
+        l.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String selectedItems = ((TextView) view).getText().toString();
+
+                if (checkedelement.contains(selectedItems)) {
+                    checkedelement.remove(selectedItems); //uncheck item
+                } else checkedelement.add(selectedItems);
+
+            }
+        });
+
+        // ListUtils.setDynamicHeight(l);
+
+
+
+
+
+      //  ListUtils.setDynamicHeight(l);
+        final ListView lexe = (ListView) findViewById(R.id.exerciseList);
+        lexe .setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+        exetask= new ArrayList<String>();
+        adapters = new ArrayAdapter<String>(this, android.R.layout.select_dialog_multichoice,  exetask);
+        lexe .setAdapter(adapters);
+       // delay(1000);
+        mDatabase = database.getReference("category/exercise");
+
+        mDatabase.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+
+                exetask.add(dataSnapshot.getValue(String.class));
+                adapters.notifyDataSetChanged();
+                setDynamicHeight(lexe );
+
+
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        lexe.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String selectedItems = ((TextView) view).getText().toString();
+
+                if (checkedExercise.contains(selectedItems)) {
+                    checkedExercise.remove(selectedItems); //uncheck item
+                } else checkedExercise.add(selectedItems);
+
+            }
+        });
+       // ListUtils.setDynamicHeight(lexe );
+
+        final ListView lwork = (ListView) findViewById(R.id.studiesandworkList);
+        lwork.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+
+        worktask= new ArrayList<String>();
+        adapterw = new ArrayAdapter<String>(this, android.R.layout.select_dialog_multichoice,  worktask);
+        lwork.setAdapter(adapterw);
+       // delay(1000);
+        wDatabase = database.getReference("category/work");
+
+        wDatabase.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+
+                worktask.add(dataSnapshot.getValue(String.class));
+                adapterw.notifyDataSetChanged();
+                setDynamicHeight(lwork);
+
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        lwork.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String selectedItems = ((TextView) view).getText().toString();
+
+                if (checkedStudies.contains(selectedItems)) {
+                    checkedStudies.remove(selectedItems); //uncheck item
+                } else checkedStudies.add(selectedItems);
+
+            }
+        });
+       // ListUtils.setDynamicHeight(lwork);
+
+
+        //delay(10000);
+
+        setDynamicHeight(l);
+       setDynamicHeight(lexe );
+       setDynamicHeight(lwork);
         time2Go();
     }
 
-    public void Check(String category){
-
-        SharedPreferences share = getSharedPreferences("MY_DATA", Context.MODE_PRIVATE);
-        String plan = share.getString(category, null);
-
-     ArrayList<String> socialtask;
-        String[] splitArray = plan.split(",");
-        List<String> ls = Arrays.<String>asList(splitArray);
-        socialtask= new ArrayList<String>(ls);
 
 
-        if(category.equals("Social")) {
-            l = (ListView) findViewById(R.id.checkview);
-            l.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
 
-            //ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,R.layout.rowlayout,R.id.txt_lan,splitArray);
-           // ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.select_dialog_multichoice, splitArray);
-            ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.select_dialog_multichoice,  socialtask);
-            l.setAdapter(adapter);
-            ListUtils.setDynamicHeight(l);
-            l.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    String selectedItems = ((TextView) view).getText().toString();
 
-                    if (checkedelement.contains(selectedItems)) {
-                        checkedelement.remove(selectedItems); //uncheck item
-                    } else checkedelement.add(selectedItems);
 
-                }
-            });
-        }
-        if(category.equals("Exercise")){
-            l = (ListView) findViewById(R.id.exerciseList);
-            l.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
-
-            //ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,R.layout.rowlayout,R.id.txt_lan,splitArray);
-            ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.select_dialog_multichoice, socialtask);
-            l.setAdapter(adapter);
-            ListUtils.setDynamicHeight(l);
-            l.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    String selectedItems = ((TextView) view).getText().toString();
-
-                    if (checkedExercise.contains(selectedItems)) {
-                        checkedExercise.remove(selectedItems); //uncheck item
-                    } else checkedExercise.add(selectedItems);
-
-                }
-            });
-
-        }
-        if(category.equals("StudiesAndWork")){
-            l = (ListView) findViewById(R.id.studiesandworkList);
-            l.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
-
-            //ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,R.layout.rowlayout,R.id.txt_lan,splitArray);
-            ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.select_dialog_multichoice, socialtask);
-            l.setAdapter(adapter);
-            ListUtils.setDynamicHeight(l);
-
-            l.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    String selectedItems = ((TextView) view).getText().toString();
-
-                    if (checkedStudies.contains(selectedItems)) {
-                        checkedStudies.remove(selectedItems); //uncheck item
-                    } else checkedStudies.add(selectedItems);
-
-                }
-            });
-        }
-
-    }
-
-    public static class ListUtils {
-        public static void setDynamicHeight(ListView mListView) {
+        public  void setDynamicHeight(ListView mListView) {
             ListAdapter mListAdapter = mListView.getAdapter();
             if (mListAdapter == null) {
                 // when adapter is null
@@ -160,12 +314,15 @@ public class Review extends AppCompatActivity {
                 listItem.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED);
                 height += listItem.getMeasuredHeight();
             }
+            System.out.print("am insde");
             ViewGroup.LayoutParams params = mListView.getLayoutParams();
             params.height = height + (mListView.getDividerHeight() * (mListAdapter.getCount() - 1));
             mListView.setLayoutParams(params);
             mListView.requestLayout();
+           // socialtask.add("here");
+            adapter.notifyDataSetChanged();
         }
-    }
+
 
     public void time2Go(){
 
@@ -203,27 +360,41 @@ public class Review extends AppCompatActivity {
 
     public void ShowChecked(View view) {
 
-        SharedPreferences shared=getSharedPreferences("MY_DATA",Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor= shared.edit();
+        //SharedPreferences shared=getSharedPreferences("MY_DATA",Context.MODE_PRIVATE);
+        //SharedPreferences.Editor editor= shared.edit();
 
-        int r=(int)sleepHours.getSelectedItem();
+       int r=(int)sleepHours.getSelectedItem();
 
-        editor.putInt("SoChLength",checkedelement.size());
-        editor.putInt("ExChLength",checkedExercise.size());
-        editor.putInt("StChLength",checkedStudies.size());
+        database.getReference("Hours").child("2").setValue(r);
 
-        editor.putInt("hoursDone",r );
+        //editor.putInt("SoChLength",checkedelement.size());
+      database.getReference("Length").child("3").setValue(checkedelement.size());
+        //editor.putInt("ExChLength",checkedExercise.size());
+     database.getReference("Length").child("4").setValue(checkedExercise.size());
+        //editor.putInt("StChLength",checkedStudies.size());
+      database.getReference("Length").child("5").setValue(checkedStudies.size());
+
+        database.getReference("Length").child("6").setValue(socialtask.size());
+        //editor.putInt("ExChLength",checkedExercise.size());
+        database.getReference("Length").child("7").setValue(exetask.size());
+        //editor.putInt("StChLength",checkedStudies.size());
+        database.getReference("Length").child("8").setValue(worktask.size());
 
 
+
+        //editor.putInt("hoursDone",r );
+     // database.getReference("hoursDone").push().setValue(r);
+/*
         // social get the length and update the database
-        String social = shared.getString("Social", null);
-        String[] splitsocial = social.split(",");
-        List<String> ls = Arrays.<String>asList(splitsocial);
+        //String social = shared.getString("Social", null);
+       // String[] splitsocial = social.split(",");
+        /*List<String> ls = Arrays.<String>asList(splitsocial);
         ArrayList<String> socialtask= new ArrayList<String>(ls);
         socialtask.removeAll(checkedelement);
         String joined = TextUtils.join(", ",socialtask);
         editor.putString("Social",  joined);
         editor.putInt("SocialLength",splitsocial.length);
+    database.getReference("SocialLength").push().setValue(splitsocial.length);
 
 
         // exercise get the length and update the database
@@ -235,7 +406,7 @@ public class Review extends AppCompatActivity {
         String exjoined = TextUtils.join(", ",exetask);
         editor.putString("Exercise",  exjoined);
         editor.putInt("ExLength",splitexe.length);
-
+      database.getReference("ExLength").push().setValue(splitexe.length);
 
        //studyandwork length and update the database
         String studynwork = shared.getString("StudiesAndWork", null);
@@ -246,10 +417,11 @@ public class Review extends AppCompatActivity {
         String studyjoined = TextUtils.join(", ",studytask);
         editor.putString("StudiesAndWork",  studyjoined);
         editor.putInt("StLength",splitsandw.length);
+       database.getReference("StLength").push().setValue(splitsandw.length);
        // commit everything
         editor.commit();
-
-        Intent intent = new Intent(this, Feedback.class);
+*/
+        Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
 
 
@@ -258,6 +430,179 @@ public class Review extends AppCompatActivity {
 
 
 }
+
+/* public ArrayList<String> myFirebase(final ArrayList<String> listtasks,DatabaseReference data) {
+      //  DatabaseReference mDatabase;
+
+
+        data.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+
+                listtasks.add(dataSnapshot.getValue(String.class));
+                //adapter.notifyDataSetChanged();
+
+
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        check=1;
+        return  listtasks;
+    }
+
+    public void check(ArrayList<String> tasks, ListView listview, final ArrayList<String> checked) {
+        //tasks.add(" ");
+        listview.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+        adapters = new ArrayAdapter<String>(this, android.R.layout.select_dialog_multichoice, tasks);
+        listview.setAdapter(adapters);
+        ListUtils.setDynamicHeight(listview);
+        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String selectedItems = ((TextView) view).getText().toString();
+
+                if (checked.contains(selectedItems)) {
+                    checked.remove(selectedItems); //uncheck item
+                } else checked.add(selectedItems);
+
+            }
+        });
+
+    }
+
+  /*  public void Check(String category,DatabaseReference generaldatabase){
+        socialtask= new ArrayList<String>();
+        generaldatabase.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot s: dataSnapshot.getChildren()){
+                    socialtask.add(s.getValue(String.class));
+                }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        socialtask.add("hwllo");
+
+
+        //SharedPreferences share = getSharedPreferences("MY_DATA", Context.MODE_PRIVATE);
+        //String plan = share.getString(category, null);
+
+    // ArrayList<String> socialtask;
+        //String[] splitArray = plan.split(",");
+        //List<String> ls = Arrays.<String>asList(splitArray);
+       // socialtask= new ArrayList<String>();
+
+
+        if(category.equals("Social")) {
+           // databaseRef = database.getReference(category);
+
+            l = (ListView) findViewById(R.id.checkview);
+            l.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+            //socialtask.add("Notjava");
+            //ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,R.layout.rowlayout,R.id.txt_lan,splitArray);
+           // ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.select_dialog_multichoice, splitArray);
+
+          adapter = new ArrayAdapter<String>(this, android.R.layout.select_dialog_multichoice,  socialtask);
+            l.setAdapter(adapter);
+            ListUtils.setDynamicHeight(l);
+            l.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    String selectedItems = ((TextView) view).getText().toString();
+
+                    if (checkedelement.contains(selectedItems)) {
+                        checkedelement.remove(selectedItems); //uncheck item
+                    } else checkedelement.add(selectedItems);
+
+                }
+            });
+        }
+
+
+
+
+
+        if(category.equals("category/exercise")){
+            databaseRef = database.getReference(category);
+            mDatabase = FirebaseDatabase.getInstance().getReference(category);
+            l = (ListView) findViewById(R.id.exerciseList);
+            l.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+            socialtask= new ArrayList<String>();
+            //ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,R.layout.rowlayout,R.id.txt_lan,splitArray);
+      adapter = new ArrayAdapter<String>(this, android.R.layout.select_dialog_multichoice, socialtask);
+           // String keys= database.getReference("category/exercise");
+            //socialtask.add(keys);
+            l.setAdapter(adapter);
+
+
+            ListUtils.setDynamicHeight(l);
+            l.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    String selectedItems = ((TextView) view).getText().toString();
+
+                    if (checkedExercise.contains(selectedItems)) {
+                        checkedExercise.remove(selectedItems); //uncheck item
+                    } else checkedExercise.add(selectedItems);
+
+                }
+            });
+
+        }
+
+        if(category.equals("category/work")){
+            l = (ListView) findViewById(R.id.studiesandworkList);
+            l.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+
+            //ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,R.layout.rowlayout,R.id.txt_lan,splitArray);
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.select_dialog_multichoice, socialtask);
+            l.setAdapter(adapter);
+            ListUtils.setDynamicHeight(l);
+
+            l.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    String selectedItems = ((TextView) view).getText().toString();
+
+                    if (checkedStudies.contains(selectedItems)) {
+                        checkedStudies.remove(selectedItems); //uncheck item
+                    } else checkedStudies.add(selectedItems);
+
+                }
+            });
+        }
+
+    }*/
 /*  String[] splitArray = null;
         try {
             splitArray = plan.split("[\\r\\n]+");

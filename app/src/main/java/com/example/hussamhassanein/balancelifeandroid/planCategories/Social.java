@@ -54,7 +54,7 @@ public class Social extends AppCompatActivity {
     private ArrayList<String> socialkey=new ArrayList<>();
     private ArrayAdapter<String > adaptertask;
     private ListView l;
-    public EditText listAdd;
+    public   EditText listAdd;
     private  Boolean edit = false;
     private int oldposition=1000;
     private FirebaseApp app;
@@ -75,9 +75,11 @@ public class Social extends AppCompatActivity {
         database = FirebaseDatabase.getInstance(app);
         auth = FirebaseAuth.getInstance(app);
         storage = FirebaseStorage.getInstance(app);
+
       // Get a reference to our chat "room" in the database
         databaseRef = database.getReference("category/social");
-        mDatabase = FirebaseDatabase.getInstance().getReference("category/social");
+
+                mDatabase = FirebaseDatabase.getInstance().getReference("category/social");
 
         listAdd = (EditText) findViewById(R.id.edittask);
         l = (ListView) findViewById(R.id.liststask);
@@ -160,7 +162,6 @@ public class Social extends AppCompatActivity {
         } else {
            // adaptertask.add(toDo);
             listAdd.setText("");
-
 
             databaseRef.push().setValue(toDo);
 

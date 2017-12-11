@@ -62,8 +62,8 @@ public class StudiesAndWork extends AppCompatActivity {
         auth = FirebaseAuth.getInstance(app);
         storage = FirebaseStorage.getInstance(app);
         // Get a reference to our chat "room" in the database
-        databaseRef = database.getReference("category/workk");
-        mDatabase = FirebaseDatabase.getInstance().getReference("category/workk");
+        databaseRef = database.getReference("category/work");
+        mDatabase = FirebaseDatabase.getInstance().getReference("category/work");
         listAdd = (EditText) findViewById(R.id.edittask);
         l = (ListView) findViewById(R.id.liststask);
         socialtask = new ArrayList<String>();// add it to lists of plan

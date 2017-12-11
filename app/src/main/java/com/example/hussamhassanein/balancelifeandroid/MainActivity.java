@@ -50,6 +50,8 @@ public class MainActivity extends AppCompatActivity {
         database2=FirebaseDatabase.getInstance(app);
         auth = FirebaseAuth.getInstance(app);
         storage = FirebaseStorage.getInstance(app);
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+     // databaseReference.removeValue();
 // Get a reference to our chat "room" in the database
 
 

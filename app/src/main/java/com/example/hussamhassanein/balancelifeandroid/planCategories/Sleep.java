@@ -15,6 +15,15 @@ import android.widget.TextView;
 
 import com.example.hussamhassanein.balancelifeandroid.MyPlan;
 import com.example.hussamhassanein.balancelifeandroid.R;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -26,11 +35,54 @@ import java.util.List;
 
 public class Sleep extends AppCompatActivity {
     Spinner sleepHours;
+    private FirebaseApp app;
+    private FirebaseDatabase database;
+    private FirebaseAuth auth;
+    private FirebaseStorage storage;
+    private DatabaseReference databaseRef;
+    private DatabaseReference mDatabase;
+    private String key="NotInitialize";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.sleep);
         sleepHours = (Spinner) findViewById(R.id.hours);
+
+        app = FirebaseApp.getInstance();
+        database = FirebaseDatabase.getInstance(app);
+        auth = FirebaseAuth.getInstance(app);
+        storage = FirebaseStorage.getInstance(app);
+        databaseRef = database.getReference("category/sleep");
+
+        databaseRef.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                String oldkey=dataSnapshot.getKey();
+                   key=oldkey;
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
         Context context;
 
         time();
@@ -72,11 +124,23 @@ public void time(){
 
 
     public void goToMyPlan(View view) {
-        SharedPreferences shared=getSharedPreferences("MY_DATA",Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor= shared.edit();
+
+
+
         int h= (int) sleepHours.getSelectedItem();
-        editor.putInt("hours",h );
-        editor.commit();
+        database.getReference("Hours").child("1").setValue(h);
+
+     /*  if(key.equals("NotInitialize")){
+          databaseRef.push().setValue(h);
+        }
+        else {
+
+       databaseRef.child(key).setValue(h);
+           //databaseRef.child("kewser").child("1").setValue(h);
+
+
+        }*/
+
         Intent intent = new Intent(this, MyPlan.class);
         startActivity(intent);
     }
